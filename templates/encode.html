@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encode Message - Steganography Tool</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-brand">🔒 Steganography Tool</a>
+            <div class="nav-links">
+                <a href="/encode">📝 Encode Message</a>
+                <a href="/decode">🔓 Decode Message</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>📝 Hide Secret Message</h1>
+            <p>Upload an image and enter the text you want to hide inside it</p>
+        </div>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="form-container">
+            <form method="POST" enctype="multipart/form-data" id="encodeForm">
+                <div class="form-group">
+                    <label for="image">📷 Select Image</label>
+                    <input type="file" name="image" id="image" accept=".png,.jpg,.jpeg,.bmp" required>
+                    <small>Supported formats: PNG, JPG, JPEG, BMP (Max 16MB)</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="secret_text">💬 Secret Message to Hide</label>
+                    <textarea name="secret_text" id="secret_text" rows="5" placeholder="Enter your secret message here..." required></textarea>
+                    <small>Your message will be hidden inside the image using LSB technique</small>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-large">🔒 Encode & Hide Message</button>
+            </form>
+        </div>
+
+        {% if encoded_image %}
+        <div class="result-container">
+            <h2>✅ Encoding Successful!</h2>
+            <div class="result-content">
+                <div class="image-preview">
+                    <img src="{{ url_for('static', filename='uploads/' + encoded_image) }}" alt="Encoded Image">
+                    <p>Encoded Image (Looks identical to original)</p>
+                </div>
+                <div class="result-info">
+                    <h3>Original Message:</h3>
+                    <p>{{ original_text }}</p>
+                    <a href="{{ url_for('download_file', filename=encoded_image) }}" class="btn btn-success">💾 Download Encoded Image</a>
+                    <a href="/decode" class="btn btn-secondary">🔓 Try Decoding</a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        // Form validation before submission
+        document.getElementById('encodeForm').addEventListener('submit', function(e) {
+            const fileInput = document.getElementById('image');
+            const textInput = document.getElementById('secret_text');
+            
+            if (!fileInput.files.length) {
+                alert('Please select an image file');
+                e.preventDefault();
+                return;
+            }
+            
+            if (!textInput.value.trim()) {
+                alert('Please enter a secret message');
+                e.preventDefault();
+                return;
+            }
+            
+            const file = fileInput.files[0];
+            const maxSize = 16 * 1024 * 1024; // 16MB
+            
+            if (file.size > maxSize) {
+                alert('File size must be less than 16MB');
+                e.preventDefault();
+                return;
+            }
+        });
+    </script>
+</body>
+</html>

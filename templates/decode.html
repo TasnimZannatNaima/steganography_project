@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decode Message - Steganography Tool</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-brand">🔒 Steganography Tool</a>
+            <div class="nav-links">
+                <a href="/encode">📝 Encode Message</a>
+                <a href="/decode">🔓 Decode Message</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>🔓 Reveal Hidden Message</h1>
+            <p>Upload an encoded image to extract the secret message hidden inside</p>
+        </div>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="form-container">
+            <form method="POST" enctype="multipart/form-data" id="decodeForm">
+                <div class="form-group">
+                    <label for="image">🔍 Select Encoded Image</label>
+                    <input type="file" name="image" id="image" accept=".png,.jpg,.jpeg,.bmp" required>
+                    <small>Upload the image that contains a hidden message</small>
+                </div>
+
+                <button type="submit" class="btn btn-secondary btn-large">🔍 Extract Hidden Message</button>
+            </form>
+        </div>
+
+        {% if hidden_text %}
+        <div class="result-container">
+            <h2>✅ Message Extracted Successfully!</h2>
+            <div class="message-box">
+                <div class="message-icon">💬</div>
+                <div class="message-content">
+                    <h3>Hidden Message Found:</h3>
+                    <p>{{ hidden_text }}</p>
+                </div>
+            </div>
+            <div class="action-buttons">
+                <a href="/encode" class="btn btn-primary">📝 Hide Another Message</a>
+                <a href="/" class="btn btn-secondary">🏠 Back to Home</a>
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="info-box">
+            <h3>ℹ️ About Decoding Process</h3>
+            <p>This tool reads the least significant bit (LSB) of each pixel in the image to reconstruct the hidden message. If no message is found, the image either doesn't contain a hidden message or was encoded with a different method.</p>
+        </div>
+    </div>
+
+    <script>
+        // Form validation
+        document.getElementById('decodeForm').addEventListener('submit', function(e) {
+            const fileInput = document.getElementById('image');
+            
+            if (!fileInput.files.length) {
+                alert('Please select an image file to decode');
+                e.preventDefault();
+                return;
+            }
+            
+            const file = fileInput.files[0];
+            const maxSize = 16 * 1024 * 1024; // 16MB
+            
+            if (file.size > maxSize) {
+                alert('File size must be less than 16MB');
+                e.preventDefault();
+                return;
+            }
+        });
+    </script>
+</body>
+</html>

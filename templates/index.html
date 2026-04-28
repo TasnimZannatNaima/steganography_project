@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Steganography Tool - Hide Secret Messages in Images</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-brand">🔒 Steganography Tool</a>
+            <div class="nav-links">
+                <a href="/encode">📝 Encode Message</a>
+                <a href="/decode">🔓 Decode Message</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="hero-section">
+            <h1 class="main-title">Hide Secret Messages Inside Images</h1>
+            <p class="subtitle">Using LSB (Least Significant Bit) Steganography Technique</p>
+        </div>
+
+        <div class="cards-container">
+            <div class="card">
+                <div class="card-icon">📝</div>
+                <h2>Encode Message</h2>
+                <p>Hide any secret text inside an image without changing its visual appearance. Nobody will know there's a hidden message!</p>
+                <ul class="feature-list">
+                    <li>✅ Support PNG, JPG, JPEG, BMP</li>
+                    <li>✅ Maximum 16MB file size</li>
+                    <li>✅ Download encoded image</li>
+                </ul>
+                <a href="/encode" class="btn btn-primary">Start Encoding →</a>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">🔓</div>
+                <h2>Decode Message</h2>
+                <p>Extract hidden messages from encoded images. Reveal the secret text that was secretly stored inside!</p>
+                <ul class="feature-list">
+                    <li>✅ Extract hidden text</li>
+                    <li>✅ Works with encoded images</li>
+                    <li>✅ Instant results</li>
+                </ul>
+                <a href="/decode" class="btn btn-secondary">Start Decoding →</a>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h3>How It Works?</h3>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <p>Upload your image</p>
+                </div>
+                <div class="step-arrow">→</div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <p>Enter secret message</p>
+                </div>
+                <div class="step-arrow">→</div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <p>Get encoded image</p>
+                </div>
+                <div class="step-arrow">→</div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <p>Decode to reveal message</p>
+                </div>
+            </div>
+            <p class="info-text">💡 <strong>What is LSB Steganography?</strong> This technique modifies the least significant bits of image pixels to store hidden data. The changes are invisible to the human eye!</p>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>© 2024 Steganography Tool | Hide & Reveal Secret Messages Securely</p>
+    </footer>
+</body>
+</html>
